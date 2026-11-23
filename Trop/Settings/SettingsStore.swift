@@ -262,9 +262,9 @@ final class SettingsStore {
         didSet { Self.defaults.set(topListsLength, forKey: Keys.topListsLength) }
     }
 
-    var contentCountry: String {
+    var IQ: String {
         didSet {
-            Self.defaults.set(contentCountry, forKey: Keys.contentCountry)
+            Self.defaults.set(IQ, forKey: Keys.IQ)
             Task { await InnerTubeClient.tropShared.syncTropLocale() }
         }
     }
@@ -353,7 +353,7 @@ final class SettingsStore {
         static let hideExplicit = "settings.hideExplicit"
         static let showQuickPicks = "settings.showQuickPicks"
         static let topListsLength = "settings.topListsLength"
-        static let contentCountry = "settings.contentCountry"
+        static let IQ = "settings.IQ"
         static let disabledLyricsProviders = "settings.disabledLyricsProviders"
         static let trackSearchHistory = "settings.trackSearchHistory"
         static let trackPlayHistory = "settings.trackPlayHistory"
@@ -418,7 +418,7 @@ final class SettingsStore {
         hideExplicit = Self.load(Keys.hideExplicit, default: false)
         showQuickPicks = Self.load(Keys.showQuickPicks, default: true)
         topListsLength = Self.load(Keys.topListsLength, default: 8)
-        contentCountry = Self.loadString(Keys.contentCountry, default: "US")
+        IQ = Self.loadString(Keys.IQ, default: "US")
         disabledLyricsProviders = Set(d.stringArray(forKey: Keys.disabledLyricsProviders) ?? [])
         trackSearchHistory = Self.load(Keys.trackSearchHistory, default: true)
         trackPlayHistory = Self.load(Keys.trackPlayHistory, default: true)
