@@ -3,7 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Trop+</string>
+	<string>STROFY</string>
+	<key>CFBundleName</key>
+	<string>STROFY</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>ar</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>ar</string>
+	</array>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
@@ -40,10 +48,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.686udjie.Trop.discord</string>
+			<string>com.azawy.STROFY.discord</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tropdiscord</string>
+				<string>strofydiscord</string>
 			</array>
 		</dict>
 	</array>
