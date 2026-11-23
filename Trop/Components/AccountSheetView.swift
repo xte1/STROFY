@@ -1,13 +1,5 @@
-//
-//  AccountSheetView.swift
-//  Trop
-//
-//  Created by 686udjie on 18/08/2026.
-//
-
 import SwiftUI
 
-/// Shared account sheet used by the Home and Library tabs.
 struct AccountSheetView: View {
     @Environment(SettingsStore.self) private var settings
 
@@ -24,42 +16,29 @@ struct AccountSheetView: View {
             List {
                 Section {
                     HStack(spacing: 14) {
-                        AccountButtonView(
-                            isLoggedIn: isLoggedIn,
-                            accountImageUrl: accountImageUrl,
-                            onTap: {}
-                        )
-                        .scaleEffect(1.7)
-                        .frame(width: 48, height: 48)
+                        Image("StrofyLogo")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 54, height: 54)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
-                        Text(titleText)
-                            .font(.title3.weight(.semibold))
-                            .lineLimit(1)
-
-                        Spacer(minLength: 8)
-
-                        if isLoggedIn {
-                            Button(action: onSignOut) {
-                                centeredActionLabel(title: "Logout")
-                            }
-                            .buttonStyle(.bordered)
-                            .tint(settings.accentColor)
-                        } else {
-                            Button(action: onLogin) {
-                                centeredActionLabel(title: "Login")
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .tint(settings.accentColor)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("STROFY")
+                                .font(.title2.weight(.bold))
+                            Text("تجربة موسيقية بلا حدود")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
+
+                        Spacer()
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 4)
+                    .padding(.vertical, 6)
                 }
 
                 Section {
                     Button(action: onSettings) {
                         HStack {
-                            Label("Settings", systemImage: "gearshape")
+                            Label("الإعدادات", systemImage: "gearshape")
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .font(.caption.weight(.semibold))
@@ -70,19 +49,14 @@ struct AccountSheetView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Account")
+            .navigationTitle("STROFY")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { onDone() }
+                    Button("تم") { onDone() }
                 }
             }
         }
         .presentationDetents([.medium])
-    }
-
-    private func centeredActionLabel(title: String) -> some View {
-        Text(title)
-            .frame(width: 78)
     }
 }
