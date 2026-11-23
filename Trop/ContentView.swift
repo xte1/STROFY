@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Trop
-//
-//  Created by 686udjie on 28/06/2026.
-//
-
 import Combine
 import SwiftUI
 
@@ -17,62 +10,59 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("Home", systemImage: "music.note.house.fill", value: 0) {
+            Tab("الرئيسية", systemImage: "music.note.house.fill", value: 0) {
                 HomeScreenView()
             }
 
-            Tab("Library", systemImage: "music.note.square.stack", value: 1) {
+            Tab("المكتبة", systemImage: "music.note.square.stack", value: 1) {
                 LibraryView()
             }
 
-            Tab("Explore", systemImage: "flame", value: 2) {
+            Tab("استكشاف", systemImage: "flame", value: 2) {
                 ExploreView()
             }
 
-            Tab("Search", systemImage: "magnifyingglass", value: 3, role: .search) {
+            Tab("بحث", systemImage: "magnifyingglass", value: 3, role: .search) {
                 SearchView()
             }
 
-            Tab("Settings", systemImage: "gearshape.fill", value: 4) {
+            Tab("الإعدادات", systemImage: "gearshape.fill", value: 4) {
                 SettingsScreenView()
             }
         }
         .tabBarMinimizeBehavior(.onScrollDown)
-            .tabViewBottomAccessory(isEnabled: nowPlaying.isBarPresented) {
-                MiniPlayerBarView(onExpand: {
-                    // Dismiss the keyboard before expanding the player so the reveal is visible on the first tap.
-                    UIApplication.shared.sendAction(
-                        #selector(UIResponder.resignFirstResponder),
-                        to: nil,
-                        from: nil,
-                        for: nil
-                    )
+        .tabViewBottomAccessory(isEnabled: nowPlaying.isBarPresented) {
+            MiniPlayerBarView(onExpand: {
+                UIApplication.shared.sendAction(
+                    #selector(UIResponder.resignFirstResponder),
+                    to: nil,
+                    from: nil,
+                    for: nil
+                )
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                    isExpanded = true
+                }
+            })
+        }
+        .background {
+            backgroundLayer
+        }
+        .overlay {
+            if isExpanded {
+                FullPlayerView(onCollapse: {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                        isExpanded = true
+                        isExpanded = false
                     }
                 })
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
-            .background {
-                backgroundLayer
-            }
-            .overlay {
-                if isExpanded {
-                    FullPlayerView(onCollapse: {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                            isExpanded = false
-                        }
-                    })
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-            }
-            .environment(scrollState)
+        }
+        .environment(scrollState)
         .onAppear { AppRouter.shared.selectedTabIndex = selectedTab }
         .onChange(of: selectedTab) { _, newValue in
             AppRouter.shared.selectedTabIndex = newValue
         }
         .onReceive(AppRouter.shared.$activeRoute) { route in
-            // A detail page was opened from an overlay: collapse the player so
-            // the pushed page is visible underneath.
             if route != nil {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
                     isExpanded = false
@@ -92,9 +82,8 @@ struct ContentView: View {
             .onEnded { value in
                 let isHorizontal = abs(value.translation.width) > abs(value.translation.height)
                 guard !isExpanded,
-                      value.startLocation.x <= 28,
                       isHorizontal,
-                      value.translation.width > 80 else { return }
+                      abs(value.translation.width) > 80 else { return }
 
                 let router = AppRouter.shared
                 let depth = router.activePathDepth
@@ -108,17 +97,6 @@ struct ContentView: View {
 
     @ViewBuilder
     private var backgroundLayer: some View {
-        if settings.playerBackgroundStyle == .solid {
-            Color.black.ignoresSafeArea()
-        } else if let accent = nowPlaying.accentColor {
-            accent
-                .opacity(0.06)
-                .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.8), value: nowPlaying.accentColor)
-        }
+        Color(.systemBackground).ignoresSafeArea()
     }
-}
-
-#Preview {
-    ContentView()
 }
