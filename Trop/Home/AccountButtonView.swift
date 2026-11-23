@@ -1,39 +1,18 @@
-//
-//  AccountButtonView.swift
-//  Trop
-//
-//  Created by 686udjie on 01/07/2026.
-//
-
 import SwiftUI
 
 struct AccountButtonView: View {
-    var isLoggedIn: Bool
-    var accountImageUrl: String?
+    var isLoggedIn: Bool = false
+    var accountImageUrl: String? = nil
     var onTap: () -> Void
 
     var body: some View {
         Button(action: onTap) {
-            if isLoggedIn {
-                AsyncImageView(url: accountImageUrl)
-                    .frame(width: 28, height: 28)
-                    .clipShape(Circle())
-            } else {
-                fallback
-            }
+            Image("StrofyLogo")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 30, height: 30)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
         .buttonStyle(.plain)
-    }
-
-    private var fallback: some View {
-        Circle()
-            .fill(Color(.systemGray4))
-            .frame(width: 28, height: 28)
-            .overlay(
-                Text("T")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-            )
     }
 }
