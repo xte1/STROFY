@@ -1,10 +1,3 @@
-//
-//  TropApp.swift
-//  Trop
-//
-//  Created by 686udjie on 28/06/2026.
-//
-
 import Nuke
 import SwiftUI
 
@@ -13,6 +6,8 @@ struct TropApp: App {
     @State private var settings = SettingsStore.shared
 
     init() {
+        UserDefaults.standard.set(["ar"], forKey: "AppleLanguages")
+        settings.contentCountry = "IQ"
         configureNuke()
         ensureDirectories()
         PlayerController.registerRemoteControlSupport()
@@ -22,8 +17,6 @@ struct TropApp: App {
         Task { @MainActor in LastFMIntegration.shared.start() }
     }
 
-    /// Re-applies mpv playback settings whenever the user changes the
-    /// equalizer or the audio filters from any screen.
     private func observePlaybackSettings() {
         func register() {
             withObservationTracking {
@@ -44,6 +37,8 @@ struct TropApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.locale, Locale(identifier: "ar"))
+                .environment(\.layoutDirection, .rightToLeft)
                 .preferredColorScheme(settings.preferredColorScheme)
                 .tint(settings.accentColor)
                 .environment(settings)
@@ -52,7 +47,7 @@ struct TropApp: App {
     }
 
     private func configureNuke() {
-        let dataCache = try? DataCache(name: "com.trop.nuke")
+        let dataCache = try? DataCache(name: "com.strofy.nuke")
         dataCache?.sizeLimit = 2 * 1024 * 1024 * 1024
 
         var config = ImagePipeline.Configuration()
